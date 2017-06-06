@@ -14,18 +14,26 @@ import java.io.IOException;
 
 public class telefonbuch extends PApplet {
 
-String name1 = "Adam Apfel";
-String number1 = "0171 1111 1111";
+ArrayList<String> names;
+ArrayList<String> numbers;
 
-String name2 = "Bert Astmann";
-String number2 = "0171 2222 2222";
+JSONArray list;
 
-String name3 = "Boris Becker";
-String number3 = "0171 3333 3333";
 
 public void setup(){
   
   background(255);
+
+  names = new ArrayList<String>();
+  numbers = new ArrayList<String>();
+
+  list = loadJSONArray("json/list.json");
+
+  for(int i = 0; i < list.size(); i++){
+    JSONObject entry = list.getJSONObject(i);
+    names.add(entry.getString("name"));
+    numbers.add(entry.getString("number"));
+  }
 }
 
 public void draw(){
@@ -35,15 +43,24 @@ public void draw(){
   textSize(18);
   text("Telefonbuch:", 20, 40);
 
-  textSize(12);
-  text(name1 + ": " + number1, 40, 80);
+  for(int i = 0; i < names.size(); i++){
+    textSize(12);
+    text(names.get(i) + ": " + numbers.get(i), 40, 80 + i * 30);
+  }
 
-  textSize(12);
-  text(name2 + ": " + number2, 40, 110);
+}
 
-  textSize(12);
-  text(name3 + ": " + number3, 40, 140);
+public void mousePressed(){
+  names = new ArrayList<String>();
+  numbers = new ArrayList<String>();
 
+  list = loadJSONArray("json/list.json");
+
+  for(int i = 0; i < list.size(); i++){
+    JSONObject entry = list.getJSONObject(i);
+    names.add(entry.getString("name"));
+    numbers.add(entry.getString("number"));
+  }
 }
   public void settings() {  size(400, 800); }
   static public void main(String[] passedArgs) {
